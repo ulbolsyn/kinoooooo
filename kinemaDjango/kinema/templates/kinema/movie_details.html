@@ -1,0 +1,143 @@
+{% extends 'kinema/wrapper.html' %}
+{% load static %}
+{% block title%} {{movie.name}} ({{movie.year}}) {% endblock %}
+{% block content %}
+<!-- Main content -->
+<section class="container" style="margin-top: 100">
+    <div class="col-sm-12">
+        <div class="movie">
+            <h2 class="page-heading">{{movie.name}}</h2>
+
+            <div class="movie__info">
+                <div class="col-sm-4 col-md-3 movie-mobile">
+                    <div class="movie__images">
+                        <span class="movie__rating">{{movie.rate}}</span>
+                        <img alt='' src="{{movie.link_poster}}">
+                    </div>
+                    <!-- <div class="movie__rate">Your vote: <div id='score' class="score"></div></div> -->
+                </div>
+
+                <div class="col-sm-8 col-md-9">
+                    <p class="movie__time">{{movie.duration}}</p>
+
+                    <p class="movie__option"><strong>Country: </strong>{% for c in movie.country_list %}{{c}}, {% endfor %}</p>
+                    <p class="movie__option"><strong>Year: </strong>{{movie.year}}</p>
+                    <p class="movie__option"><strong>Category: </strong>{% for c in movie.categories_list %}{{c}}, {% endfor %}</p>
+                    <p class="movie__option"><strong>Release date: </strong>{{movie.releas_date.date}}</p>
+                    <p class="movie__option"><strong>Director: </strong>{{movie.director}}</p>
+                    <p class="movie__option"><strong>Actors: </strong>{% for c in movie.actors_list %}{{c}}, {% endfor %}</p>
+                    <p class="movie__option"><strong>Age restriction: </strong>{{movie.age_restrict}}</p>
+                    <p class="movie__option"><strong>Box office: </strong>${{movie.box_office}}</p>
+
+                    {% if request.user.is_authenticated %}
+                    <div class="movie__btns">
+                        <a href="/buy_ticket/{{movie.id}}" class="btn btn-md btn--warning">book a ticket <span class="hidden-sm">for this movie</span></a>
+                    </div>
+                    {% else %}
+                    <div class="movie__btns">
+                        <a href="/auth/" class="btn btn-md btn--warning">sign in <span class="hidden-sm">to buy tickets</span></a>
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <h2 class="page-heading">The plot</h2>
+
+            <p class="movie__describe">{{movie.plot}}</p>
+
+            <h2 class="page-heading">Trailer & photos</h2>
+            <div class="movie__media">
+                <div class="movie__media-switch">
+                    <a href="#" class="watchlist list--photo" data-filter='media-photo'>{% if movie.image_count > 0 %}{{movie.image_count}}{%else%}0{%endif%} photos</a>
+                    <a href="#" class="watchlist list--video" data-filter='media-video'>1 trailer</a>
+                </div>
+
+                <div class="swiper-container">
+                  <div class="swiper-wrapper">
+                      <!--First Slide-->
+                      <div class="swiper-slide media-video">
+                        <a href='{{movie.link_trailer}}' class="movie__media-item ">
+                             <img alt='' src="/static/images/movie/movie-video1.jpg">
+                        </a>
+                      </div>
+
+                      {% for i in movie.images %}
+                      <div class="swiper-slide media-photo">
+                            <a href='{{i.movie_img.url}}' class="movie__media-item">
+                                <img alt='' src="{{i.movie_img.url}}">
+                            </a>
+                      </div>
+                      {% endfor %}
+                  </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <h2 class="page-heading">showtime &amp; tickets</h2>
+        <div class="choose-container">
+            <div class="clearfix"></div>
+            <div class="time-select">
+                {% for c in movie.cinemas%}
+                <div class="time-select__group group--first">
+                    <div class="col-sm-4">
+                        <p class="time-select__place">{{c.cinema}}</p>
+                    </div>
+                    <ul class="col-sm-8 items-wrap">
+                        {% for t in c.times %}
+                        <li class="time-select__item" data-time='{{t.time}}'>{{t.time}}</li>
+                        {% endfor%}
+                    </ul>
+                </div>
+                {%endfor%}
+            <h2 class="page-heading">comments ({{movie.comment_count}})</h2>
+
+            <div class="comment-wrapper">
+                  {% if request.user.is_authenticated %}
+                  {% if rating %}
+                    <p class="container">Your Mark: {{rating.rate}}</p>
+                  {% else %}
+                  <div class="container">
+                   <form method="post" action="{% url 'kinema:setRating' movie.id%}">
+                    {% csrf_token %}
+                      <input type="number" name="rating_num" value="5">
+                      <input type="submit" value="Rate">
+                    </form>
+                  </div>
+                  {% endif %}
+                  <form id="comment-form" class="comment-form" method='post' action="/movie/add_comment/{{movie.id}}">
+                      {%csrf_token%}
+                      <textarea class="comment-form__text" name="comment_text" placeholder='Add you comment here'></textarea>
+                      <button type='submit' class="btn btn-md btn--danger comment-form__btn">add comment</button>
+                  </form>
+                  {%else%}
+                  <h2>To leave the comment you must signed in.</h2>
+                  {%endif%}
+
+                <div class="comment-sets" style="margin-top: 100">
+                {% for c in movie.comments%}
+                <div class="comment">
+                    <a href='#' class="comment__author">{{c.user.first_name}} {{c.user.last_name}}</a>
+                    <p class="comment__date">{{c.posted}}</p>
+                    <p class="comment__message">{{c.comment}}</p>
+                </div>
+                {% endfor %}
+            </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        init_MoviePage();
+         init_MoviePageFull();
+    });
+</script>
+{% endblock %}

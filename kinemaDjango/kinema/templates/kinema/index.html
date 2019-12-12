@@ -1,0 +1,115 @@
+{% extends 'kinema/wrapper.html' %}
+{% load static %}
+{% block title%} Kinema {% endblock %}
+{% block content %}
+
+<!-- Slider -->
+<div class="bannercontainer">
+        <div class="banner">
+            <ul>
+                <li data-transition="fade" data-slotamount="7" class="slide" data-slide='Stop wishing. Start doing.'>
+                    <img alt='' src="/static/images/slides/next-slide.jpg">
+                     <div class="caption slide__name slide__name--smaller slide__name--specific customin customout"
+                         data-x="left"
+                         data-y="160"
+                         data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+                         data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                         data-speed="700"
+                         data-start="1400"
+                         data-easing="easeOutBack"
+                         data-endspeed="500"
+                         data-end="8600000000"
+                         data-endeasing="Back.easeIn">
+                        Stop <span class="highlight">wishing.</span> Start <span class="highlight">doing.</span>
+                    </div>
+                      <div class="caption slide__descript customin customout"
+                         data-x="left"
+                         data-y="240"
+                         data-customin="x:0;y:0;z:0;rotationX:90;rotationY:0;rotationZ:0;scaleX:1;scaleY:1;skewX:0;skewY:0;opacity:0;transformPerspective:200;transformOrigin:50% 0%;"
+                         data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                         data-speed="700"
+                         data-start="2000"
+                         data-endspeed="500"
+                         data-end="8400000000"
+                         data-endeasing="Back.easeIn">
+                         find your best match movie with KINEMA
+                     </div>
+                     <div class="caption lfb customout slider-wrap-btn"
+                         data-x="left"
+                         data-y="310"
+                         data-speed="500"
+                         data-start="2800"
+                         data-easing="Power4.easeOut"
+                         data-customout="x:0;y:0;z:0;rotationX:0;rotationY:0;rotationZ:0;scaleX:0.75;scaleY:0.75;skewX:0;skewY:0;opacity:0;transformPerspective:600;transformOrigin:50% 50%;"
+                         data-endspeed="400"
+                         data-end="8000000"
+                         data-endeasing="Power4.easeOut" >
+                         <a href="/movies" class="btn btn-md btn--danger slider--btn">check out movies</a>
+                     </div>
+                </li>
+            </ul>
+        </div>
+</div>
+<!--end slider -->
+
+
+<!-- Main content -->
+<section class="container">
+<div class="movie-best">
+     <div class="col-sm-10 col-sm-offset-1 movie-best__rating">Today Best choice</div>
+     <div class="col-sm-12 change--col">
+       {% for m in today_choice %}
+         <div class="movie-beta__item ">
+            <img alt='' src="{{m.link_poster}}">
+             <span class="best-rate">{{m.rate}}</span>
+
+             <ul class="movie-beta__info col-sm-12">
+                 <li><span class="best-voted">{{m.name}}</span></li>
+                 <li>
+                    <p class="movie__time">{{m.duration}}</p>
+                    <p>{% for c in m.categories_list %} | {{c.name}} | {% endfor %}</p>
+                    <p>{{m.comment_count}} comments</p>
+                 </li>
+                 <li class="last-block">
+                     <a href="/movie/{{m.id}}" class="slide__link">more</a>
+                 </li>
+             </ul>
+         </div>
+        {% endfor %}
+     </div>
+    <div class="col-sm-10 col-sm-offset-1 movie-best__check">check all movies now playing</div>
+</div>
+
+<div class="clearfix"></div>
+
+<h2 id='target' class="page-heading heading--outcontainer">Now in the cinema</h2>
+
+<div class="col-sm-12">
+    <div class="row">
+        <div class="col-sm-12">
+            {% for m in now_in_cinema %}
+            <!-- Movie variant with time -->
+                <div class="movie movie--test movie--test--dark movie--test--left">
+                    <div class="movie__images">
+                        <a href="movie/{{m.id}}" class="movie-beta__link">
+                            <img alt='' src="{{m.link_poster}}">
+                        </a>
+                    </div>
+
+                    <div class="movie__info">
+                        <a href='movie/{{m.id}}' class="movie__title">{{m.name}} ({{m.year}})  </a>
+                        <p class="movie__time" style="margin: 30 0">{{m.duration}}</p>
+                        <p class="movie__option" style="margin: 30 0">{% for c in m.categories_list %} | {{c.name}} | {% endfor %}</p>
+                        <div class="movie__rate">
+                            <span class="movie__rating">{{m.rate}}</span>
+                        </div>
+                    </div>
+                </div>
+             <!-- Movie variant with time -->
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</section>
+
+{% endblock %}

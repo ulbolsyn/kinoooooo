@@ -1,0 +1,34 @@
+{% extends 'kinema/wrapper.html' %}
+{% load static %}
+{% block title%} My Tickets {% endblock %}
+{% block content %}
+
+<!-- Main content -->
+<section class="container" style="margin-top: 75">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
+                <h2 class="page-heading">My Tickets</h2>
+
+                <div class="rates-wrapper rates--full">
+
+                    <table>
+                        <colgroup class="col-width-lg">
+                        <colgroup class="col-width">
+                        <colgroup class="col-width-sm">
+                        <colgroup class="col-width">
+                        {% for m in tickets%}
+                        <tr class="rates">
+                            <td class="rates__obj"><a href="/ticket/{{m.id}}" class="rates__obj-name">{{forloop.counter}}. {{m.movie.name}}</a></td>
+                            <td class="rates__vote">{{m.cinema.name}}</td>
+                            <td class="rates__vote">{{m.date}} {{m.time}}</td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

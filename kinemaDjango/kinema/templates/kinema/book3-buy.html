@@ -1,0 +1,62 @@
+{% extends 'kinema/wrapper.html' %}
+{% load static %}
+{% block title%} Booking - {{movie.name}} ({{movie.year}}) {% endblock %}
+{% block content %}
+
+<!-- Main content -->
+<section class="container" style="margin-top: 100">
+    <div class="order-container">
+        <div class="order">
+            <img class="order__images" alt='' src="/static/images/tickets.png">
+            <p class="order__title">Book a ticket <br><span class="order__descript">{{movie.name}} ({{movie.year}})</span></p>
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <div class="checkout-wrapper">
+            <h2 class="page-heading">price</h2>
+            <ul class="book-result">
+                <li class="book-result__item">Total: <span class="book-result__count booking-cost">${{cost}}</span></li>
+            </ul>
+            <h2 class="page-heading">Contact information</h2>
+
+            <form id='contact-info' method='post' novalidate="" class="form contact-info" action="/buy_ticket/{{movie.id}}/final">
+              {%csrf_token%}
+                <div class="contact-info__field contact-info__field-mail">
+                    <input type='email' name='user-mail' placeholder='Your email' class="form__mail" required="required">
+                </div>
+                <div class="contact-info__field contact-info__field-tel">
+                    <input type='tel' name='user-tel' placeholder='Phone number' class="form__mail"  required="required">
+                </div>
+                <input type='hidden' name='choosen-number' value="{{count_ticket}}" class="choosen-number">
+                <input type='hidden' name='choosen-number--cheap' value="{{count_10}}" class="choosen-number--cheap">
+                <input type='hidden' name='choosen-number--middle' value="{{count_20}}" class="choosen-number--middle">
+                <input type='hidden' name='choosen-number--expansive' value="{{count_30}}" class="choosen-number--expansive">
+                <input type='hidden' name='choosen-cost' value="{{cost}}" class="choosen-cost">
+                <input type='hidden' name='choosen-sits' value="{{sits}}" class="choosen-sits">
+                <input type='hidden' name='choosen-date' value="{{date}}" class="choosen-date">
+                <input type='hidden' name='choosen-cinema' value="{{cinema}}" class="choosen-cinema">
+                <input type='hidden' name='choosen-time' value="{{time}}" class="choosen-time">
+                <div class="order">
+                    <button type="submit" class="btn btn-md btn--warning btn--wide" style="margin-top: 50">purchase</button>
+                </div>
+            </form>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<div class="clearfix"></div>
+
+<div class="booking-pagination">
+        <a href="/buy_ticket/{{movie.id}}" class="booking-pagination__prev">
+            <p class="arrow__text arrow--prev">rechoose</p>
+            <span class="arrow__info">Cinema & Date & Time</span>
+        </a>
+</div>
+
+{% endblock %}

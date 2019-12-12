@@ -1,0 +1,39 @@
+{% extends 'kinema/wrapper.html' %}
+{% load static %}
+{% block title%} Booking - {{movie.name}} ({{movie.year}}) {% endblock %}
+{% block content %}
+
+<section class="container" style="margin-top: 100">
+    <div class="order-container">
+        <div class="order">
+            <img class="order__images" alt='' src="/static/images/tickets.png">
+            <p class="order__title">Thank you <br><span class="order__descript">you have successfully purchased tickets</span></p>
+        </div>
+
+        <div class="ticket">
+            <div class="ticket-position">
+                <div class="ticket__indecator indecator--pre"><div class="indecator-text pre--text">online ticket</div> </div>
+                <div class="ticket__inner">
+
+                    <div class="ticket-secondary">
+                        <span class="ticket__item">Ticket number <strong class="ticket__number">a126bym4</strong></span>
+                        <span class="ticket__item ticket__date">{{date}}</span>
+                        <span class="ticket__item ticket__time">{{time}}</span>
+                        <span class="ticket__item">Cinema: <span class="ticket__cinema">{{cinema}}</span></span>
+                        <span class="ticket__item ticket__price">price: <strong class="ticket__cost">${{cost}}</strong></span>
+                    </div>
+
+                    <div class="ticket-primery">
+                        <span class="ticket__item ticket__item--primery ticket__film">Film<br><strong class="ticket__movie">{{movie.name}} ({{movie.year}})</strong></span>
+                        <span class="ticket__item ticket__item--primery">Sits: <span class="ticket__place">{{sits}}</span></span>
+                    </div>
+
+
+                </div>
+                <div class="ticket__indecator indecator--post"><div class="indecator-text post--text">online ticket</div></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'kinema/wrapper.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title%} Kinema {% endblock %}
+{% block content %}
+<form method="post" class="form" style="margin-top: 150">
+      {% csrf_token %}
+      {{ form|crispy }}
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary" style="margin-top:30px">Sign in</button>
+        </div>
+        <div class="text-center" style="margin-top:10px">
+            are you first here?
+          <a href="/reg/">
+            Create account
+          </a>
+        </div>
+    </form>
+{%endblock%}
